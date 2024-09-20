@@ -1,5 +1,9 @@
 {
+  "name": "@hkithub-official/no-plaintext-passwords-node-esm",
   "type": "module",
+  "scripts": {
+    "scrypt": "node scrypt.js"
+  },
   "dependencies": {
     "bcrypt": "^5.1.1"
   }
