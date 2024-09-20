@@ -1,0 +1,15 @@
+{
+  "name": "@hkithub-official/no-plaintext-passwords-bun",
+  "type": "module",
+  "scripts": {
+    "argon2": "bun argon2.js",
+    "bcrypt": "bun bcrypt.js",
+    "scrypt": "bun scrypt.js"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
