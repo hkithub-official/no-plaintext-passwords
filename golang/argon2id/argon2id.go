@@ -11,6 +11,8 @@ import (
 
 func main() {
 	pw := []byte("p@ssword")
+	incorrPw := []byte("incorrect")
+
 	saltLen := 16
 	var time uint32 = 3
 	var memory uint32 = 19 * 1024
@@ -23,15 +25,15 @@ func main() {
 	}
 
 	// Hash
-	hash := argon2.IDKey([]byte(pw), salt, time, memory, threads, keyLen)
+	hash := argon2.IDKey(pw, salt, time, memory, threads, keyLen)
+	hash2 := argon2.IDKey(pw, salt, time, memory, threads, keyLen)
+	incorrHash := argon2.IDKey(incorrPw, salt, time, memory, threads, keyLen)
 
 	// Verify
-	hash2 := argon2.IDKey([]byte(pw), salt, time, memory, threads, keyLen)
 	match := subtle.ConstantTimeCompare(hash, hash2) == 1
 	fmt.Printf("verify result: %t\n", match)
 
-	hash3 := argon2.IDKey([]byte("incorrect"), salt, time, memory, threads, keyLen)
-	match = subtle.ConstantTimeCompare(hash, hash3) == 1
+	match = subtle.ConstantTimeCompare(hash, incorrHash) == 1
 	fmt.Printf("verify result: %t\n", match)
 }
 
