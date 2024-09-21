@@ -9,6 +9,7 @@ import (
 
 func main() {
 	pw := []byte("p@ssword")
+	incorrPw := []byte("incorrect")
 	cost := 12 // default is 10
 
 	// Hash
@@ -21,6 +22,6 @@ func main() {
 	err = bcrypt.CompareHashAndPassword(hash, pw)
 	fmt.Printf("verify result: %t\n", err == nil)
 
-	err = bcrypt.CompareHashAndPassword(hash, []byte("incorrect"))
+	err = bcrypt.CompareHashAndPassword(hash, incorrPw)
 	fmt.Printf("verify result: %t\n", err == nil)
 }

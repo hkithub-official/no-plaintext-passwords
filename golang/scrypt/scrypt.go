@@ -11,6 +11,8 @@ import (
 
 func main() {
 	pw := []byte("p@ssword")
+	incorrPw := []byte("incorrect")
+
 	saltLen := 32
 	cost := 32768
 	r := 8
@@ -23,18 +25,22 @@ func main() {
 	}
 
 	// Hash
-	hash, err := scrypt.Key(pw, salt, cost, r, p, keyLen)
-	if err != nil {
+	var hash, hash2, incorrHash []byte
+	if hash, err = scrypt.Key(pw, salt, cost, r, p, keyLen); err != nil {
+		log.Fatal(err)
+	}
+	if hash2, err = scrypt.Key(pw, salt, cost, r, p, keyLen); err != nil {
+		log.Fatal(err)
+	}
+	if incorrHash, err = scrypt.Key(incorrPw, salt, cost, r, p, keyLen); err != nil {
 		log.Fatal(err)
 	}
 
 	// Verify
-	hash2, _ := scrypt.Key(pw, salt, cost, r, p, keyLen)
 	match := subtle.ConstantTimeCompare(hash, hash2) == 1
 	fmt.Printf("verify result: %t\n", match)
 
-	hash3, _ := scrypt.Key([]byte("incorrect"), salt, cost, r, p, keyLen)
-	match = subtle.ConstantTimeCompare(hash, hash3) == 1
+	match = subtle.ConstantTimeCompare(hash, incorrHash) == 1
 	fmt.Printf("verify result: %t\n", match)
 }
 
